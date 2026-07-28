@@ -9,7 +9,7 @@
 
 ## 👥 Autoria
 
-Michael Jourdain Gbedjinou.
+**<span style="color:#0066CC;">Michael Jourdain Gbedjinou</span>**.
 
 ## 🎯 Problema de negócio
 
