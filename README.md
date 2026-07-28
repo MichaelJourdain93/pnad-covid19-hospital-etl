@@ -9,7 +9,7 @@
 
 ## 👥 Autoria
 
-Michael Jourdain Gbedjinou — Pós-Tech Data Analytics (FIAP).
+Michael Jourdain Gbedjinou.
 
 ## 🎯 Problema de negócio
 
