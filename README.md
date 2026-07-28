@@ -1,3 +1,164 @@
+<details name="lang-toggle">
+<summary><b>🇺🇸 English</b></summary>
+
+# 📊 PNAD-COVID-19: ETL and Analysis with PySpark for Hospital Preparedness
+
+![Python](https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=white)
+![PySpark](https://img.shields.io/badge/PySpark-Big%20Data-E25A1C?logo=apachespark&logoColor=white)
+![GeoPandas](https://img.shields.io/badge/GeoPandas-Geospatial-2E8B57)
+![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-F37626?logo=jupyter&logoColor=white)
+![Airflow](https://img.shields.io/badge/Airflow-Orchestration%20(planned)-017CEE?logo=apacheairflow&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Completed-brightgreen)
+
+##
+![Author](https://img.shields.io/badge/Author-Michael%20Jourdain%20Gbedjinou-lightgrey?style=for-the-badge)
+## 🎯 Business problem
+
+Understand how the Brazilian population behaved during the COVID-19 pandemic and **which indicators would be relevant for hospital planning**, in case of a new outbreak.
+
+The project simulates the role of a data team that receives a real hospital management problem and needs to turn raw microdata from the **PNAD-COVID-19 (IBGE)** household survey into actionable indicators, covering three dimensions: clinical symptoms, population behavior, and socioeconomic characteristics.
+
+**Predefined project constraints:**
+- Use at most 20 questions from the original survey
+- 3-month data window (Sep/Oct/Nov 2020)
+- Coverage of: clinical symptoms, population behavior, and economic characteristics
+
+
+## 🏗️ Architecture / Data flow
+
+```mermaid
+flowchart LR
+    subgraph Sources["Data sources (IBGE)"]
+        A1[PNAD-COVID Sep/2020]
+        A2[PNAD-COVID Oct/2020]
+        A3[PNAD-COVID Nov/2020]
+        A4[Variable dictionary]
+        A5[State shapefiles]
+    end
+
+    subgraph ETL["ETL - PySpark"]
+        B1[Read the 3 datasets\n~387k / ~380k / ~381k rows]
+        B2[Select 20 questions\n145+ → 22 columns]
+        B3[Semantic decoding\nUDFs: symptoms, comorbidities,\nage group, state, income]
+        B4[Column standardization\nfact table creation]
+        B5[Final consolidation\n~1.15M records]
+    end
+
+    subgraph Analysis["Analysis & Visualization"]
+        C1[EDA - 3 sections:\nsociodemographic, clinical, economic]
+        C2[Choropleth map by state\nGeoPandas + Shapefile]
+        C3[Final report\nfindings + proposed actions]
+    end
+
+    subgraph Orch["Orchestration (planned)"]
+        D1[Airflow DAG\nspark-submit ETL → validation → publication]
+    end
+
+    A1 & A2 & A3 --> B1 --> B2 --> B3 --> B4 --> B5
+    A4 -.guides.-> B3
+    B5 --> C1
+    B5 --> C2
+    A5 --> C2
+    C1 & C2 --> C3
+    B1 -.future.-> D1
+```
+
+## ⚙️ Execution phases
+
+### 1. Ingestion — Data extraction
+Reading the three raw PNAD-COVID-19 files (September, October, and November 2020) via **PySpark (`SparkSession`)**, totaling **387,298 + 380,461 + 381,438 records**, each with 145+ columns — most with a very high proportion of null values. This extraction gave an overview of the available content before modeling.
+
+### 2. Transformation — Data manipulation
+- **Creation of a fact table**, renaming columns according to the official PNAD dictionary.
+- **Selection of 20 questions** (out of 145+ available), with explicit criteria of analytical relevance + low null ratio, to reduce bias in decision-making.
+- **Semantic decoding via UDFs**: state, age group, sex, symptoms (fever, cough, shortness of breath, loss of smell/taste), comorbidities (hypertension, respiratory disease, heart disease, cancer), health insurance, COVID test, and socioeconomic variables (contact restriction, emergency aid, unemployment insurance, loan request).
+- **Consolidation of the 3 months** into a single base of **~1,149,197 records**.
+
+### 3. Orchestration
+Today the pipeline runs manually, cell by cell, in a notebook. As the next step of the project, the ETL logic is being extracted into `.py` modules under `src/`, orchestrated by an **Airflow DAG** (`dags/pnad_covid_pipeline.py` — see the stub included in this repository) that simulates the `spark-submit ETL → schema validation → publication of the curated base` flow.
+
+### 4. Visualization
+Charts organized into **3 analytical sections** (sociodemographic, clinical symptoms, economic) using pandas/matplotlib/seaborn, plus a **choropleth map by state** (GeoPandas + IBGE shapefiles) to visualize the geographic distribution of indicators. Findings were consolidated into a final report with recommendations for hospital management.
+
+## 🛠️ Tech stack and rationale
+
+| Layer | Technology | Why |
+|---|---|---|
+| Distributed processing | **PySpark** (`pyspark.sql`, DataFrame API, UDFs) | Volume of +1M rows and need for transformation at scale — same logic used in production pipelines |
+| Manipulation/EDA | **pandas, numpy** | Exploratory analysis after consolidation via Spark |
+| Visualization | **matplotlib, seaborn** | Charts for the 3 analytical sections (sociodemographic, clinical, economic) |
+| Geospatial | **GeoPandas + Shapefiles (IBGE)** | Choropleth map by state |
+| Environment | **Jupyter Notebook** | Iterative exploration documented side by side with the code |
+| Orchestration (planned) | **Apache Airflow** | Simulate the transition from an exploratory notebook to a schedulable/productizable pipeline |
+
+## 💻 Running locally
+
+```bash
+git clone https://github.com/MichaelJourdain93/pnad-covid19-hospital-etl.git
+cd pnad-covid19-hospital-etl
+
+python -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+
+pip install -r requirements.txt
+
+jupyter notebook notebooks/01_etl_pnad_covid.ipynb
+```
+
+> The raw PNAD-COVID-19 microdata is not versioned in Git. Download it directly from the [IBGE FTP](https://ftp.ibge.gov.br/Trabalho_e_Rendimento/Pesquisa_Nacional_por_Amostra_de_Domicilios_continua/Trabalho_e_garantia_de_renda_durante_a_pandemia_de_Covid-19/Microdados/) and place it in `data/raw/`.
+
+## 📈 Results / Insights
+
+- **Socioeconomic profile as a risk factor:** more than **60% of those hospitalized for COVID-19** belonged to the lowest income brackets — indicating that economic vulnerability is a relevant predictor of clinical severity.
+- **Symptoms as an early signal:** fever, cough, and shortness of breath were the most prevalent symptoms, reported by **~10% of respondents**, reinforcing their value as key screening indicators.
+- **Labor market shock:** unemployment reached **~14%** during the most critical months of the pandemic, concentrated among informal workers and the trade and services sectors.
+- **Inequality cycle:** the analysis pointed to a circular effect — economic vulnerability reduces access to healthcare, which worsens clinical symptoms in poorer populations; Black and mixed-race groups faced greater difficulty accessing adequate health services.
+- **Recommended actions for the hospital**, derived directly from the data:
+  1. **Automated clinical triage** for fever, cough, and breathing difficulty, optimizing resource allocation.
+  2. **Focus on vulnerable populations** (elderly, comorbidities, low income) via home care and telemedicine, reducing avoidable hospitalizations.
+  3. **Partnerships for economic and social mitigation** (government/NGOs) — food baskets, medication assistance, and educational actions in underserved communities.
+
+## 🔭 Next steps
+
+- [ ] Extract the notebook logic into testable `.py` modules under `src/`
+- [ ] Add the Airflow DAG (`dags/pnad_covid_pipeline.py`) to the real flow, with `SparkSubmitOperator`
+- [ ] Publish the heat map as an interactive visual (Folium/Streamlit) instead of a static image
+
+
+
+## 📁 Project structure
+
+```
+pnad-covid19-hospital-etl/
+├── README.md
+├── requirements.txt
+├── .gitignore
+├── notebooks/
+│   └── PNAD_covid_19.ipynb
+├── dags/
+│   └── pnad_covid_pipeline.py         # Airflow orchestration stub
+├── data/
+│   └── raw/
+│       └── SOURCES.md                 # official IBGE link to download the 3 raw datasets
+├── reports/
+│   └── mapa_calor_estados/
+│       └── SOURCES.md                 # link to the shapefile used in the heat map
+└── docs/
+    ├── Fase3_Tech_Challenge_Grupo62.pdf
+    ├── tech_challenge_briefing.txt    # original challenge statement
+    ├── datasets_import_google_colab.png
+    └── dicionario_pnad_covid/
+        ├── Dicionario_PNAD_COVID_092020_20220621.xls
+        ├── Dicionario_PNAD_COVID_102020_20220621.xls
+        ├── Dicionario_PNAD_COVID_112020_20220621.xls
+        └── de_para_variaveis_selecionadas.txt
+```
+
+</details>
+
+<details open name="lang-toggle">
+<summary><b>🇧🇷 Português</b></summary>
+
 # 📊 PNAD-COVID-19: ETL e Análise com PySpark para Preparação Hospitalar
 
 ![Python](https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=white)
@@ -91,8 +252,8 @@ Gráficos organizados em **3 seções analíticas** (sociodemográfica, sintomas
 ## 💻 Como rodar localmente
 
 ```bash
-git clone https://github.com/MichaelJourdain93/PNAD_COVID_TECH_CHALLENGE.git
-cd PNAD_COVID_TECH_CHALLENGE
+git clone https://github.com/MichaelJourdain93/pnad-covid19-hospital-etl.git
+cd pnad-covid19-hospital-etl
 
 python -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
@@ -150,3 +311,5 @@ PNAD_COVID_TECH_CHALLENGE/
         ├── Dicionario_PNAD_COVID_112020_20220621.xls
         └── de_para_variaveis_selecionadas.txt
 ```
+
+</details>
