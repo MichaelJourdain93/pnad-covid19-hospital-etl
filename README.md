@@ -7,6 +7,10 @@
 ![Airflow](https://img.shields.io/badge/Airflow-Orquestração%20(planejada)-017CEE?logo=apacheairflow&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-Concluído-brightgreen)
 
+## 👥 Autoria
+
+Michael Jourdain Gbedjinou — Pós-Tech Data Analytics (FIAP).
+
 ## 🎯 Problema de negócio
 
 Entender como foi o comportamento da população brasileira durante a pandemia de COVID-19 e **quais indicadores seriam relevantes para o planejamento hospitalar**, caso ocorra um novo surto da doença.
@@ -119,9 +123,7 @@ jupyter notebook notebooks/01_etl_pnad_covid.ipynb
 - [ ] Adicionar a DAG do Airflow (`dags/pnad_covid_pipeline.py`) ao fluxo real, com `SparkSubmitOperator`
 - [ ] Publicar o mapa de calor como visual interativo (Folium/Streamlit) em vez de imagem estática
 
-## 👥 Autoria
 
-Projeto — Pós-Tech Data Analytics (FIAP), Fase 3. Manutenção e versão para portfólio por [Michael Jourdain Gbedjinou](https://github.com/MichaelJourdain93).
 
 ## 📁 Estrutura do projeto
 
