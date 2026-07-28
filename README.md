@@ -18,7 +18,7 @@ O projeto simula o papel de um time de dados que recebe um problema real de gest
 - Janela de 3 meses de dados (set/out/nov de 2020)
 - Cobertura de: sintomas clínicos, comportamento populacional e características econômicas
 
-> Projeto desenvolvido na Pós-Tech em Data Analytics (FIAP) — Tech Challenge Fase 3, Grupo 62.
+> Projeto desenvolvido na Pós-Tech em Data Analytics (FIAP) — Tech Challenge Fase 3.
 
 ## 🏗️ Arquitetura / Fluxo de dados
 
