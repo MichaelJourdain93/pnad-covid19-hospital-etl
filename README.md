@@ -7,10 +7,8 @@
 ![Airflow](https://img.shields.io/badge/Airflow-Orquestração%20(planejada)-017CEE?logo=apacheairflow&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-Concluído-brightgreen)
 
-## 👥 Autoria
-
+## 
 ![Autor](https://img.shields.io/badge/Autor-Michael%20Jourdain%20Gbedjinou-0A66C2?style=for-the-badge)
-
 ## 🎯 Problema de negócio
 
 Entender como foi o comportamento da população brasileira durante a pandemia de COVID-19 e **quais indicadores seriam relevantes para o planejamento hospitalar**, caso ocorra um novo surto da doença.
