@@ -9,7 +9,7 @@
 
 ## 👥 Autoria
 
-**<span style="color:#0066CC;">Michael Jourdain Gbedjinou</span>**.
+![Autor](https://img.shields.io/badge/Autor-Michael%20Jourdain%20Gbedjinou-0A66C2?style=for-the-badge)
 
 ## 🎯 Problema de negócio
 
