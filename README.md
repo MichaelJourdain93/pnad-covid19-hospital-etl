@@ -8,7 +8,7 @@
 ![Status](https://img.shields.io/badge/Status-Concluído-brightgreen)
 
 ## 
-![Autor](https://img.shields.io/badge/Autor-Michael%20Jourdain%20Gbedjinou-0A66C2?style=for-the-badge)
+![Autor](https://img.shields.io/badge/Autor-Michael%20Jourdain%20Gbedjinou-lightgrey?style=for-the-badge)
 ## 🎯 Problema de negócio
 
 Entender como foi o comportamento da população brasileira durante a pandemia de COVID-19 e **quais indicadores seriam relevantes para o planejamento hospitalar**, caso ocorra um novo surto da doença.
