@@ -118,13 +118,6 @@ jupyter notebook notebooks/01_etl_pnad_covid.ipynb
   2. **Focus on vulnerable populations** (elderly, comorbidities, low income) via home care and telemedicine, reducing avoidable hospitalizations.
   3. **Partnerships for economic and social mitigation** (government/NGOs) — food baskets, medication assistance, and educational actions in underserved communities.
 
-## 🔭 Next steps
-
-- [ ] Extract the notebook logic into testable `.py` modules under `src/`
-- [ ] Add the Airflow DAG (`dags/pnad_covid_pipeline.py`) to the real flow, with `SparkSubmitOperator`
-- [ ] Publish the heat map as an interactive visual (Folium/Streamlit) instead of a static image
-
-
 
 ## 📁 Project structure
 
@@ -275,14 +268,6 @@ jupyter notebook notebooks/01_etl_pnad_covid.ipynb
   1. **Triagem clínica automatizada** para febre, tosse e dificuldade respiratória, otimizando alocação de recursos.
   2. **Foco em populações vulneráveis** (idosos, comorbidades, baixa renda) via atendimento domiciliar e telemedicina, reduzindo hospitalizações evitáveis.
   3. **Parcerias para mitigação econômica e social** (governo/ONGs) — cestas básicas, auxílio a medicamentos e ações educativas em comunidades carentes.
-
-## 🔭 Próximos passos
-
-- [ ] Extrair a lógica do notebook para módulos `.py` testáveis em `src/`
-- [ ] Adicionar a DAG do Airflow (`dags/pnad_covid_pipeline.py`) ao fluxo real, com `SparkSubmitOperator`
-- [ ] Publicar o mapa de calor como visual interativo (Folium/Streamlit) em vez de imagem estática
-
-
 
 ## 📁 Estrutura do projeto
 
